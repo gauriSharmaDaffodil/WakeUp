@@ -11,7 +11,13 @@ enum Mode {
 class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
     
     @IBOutlet weak var tickImgView: UIImageView!
+    @IBOutlet weak var addressLbl: UILabel!
+    @IBOutlet weak var customView: UIView!
+    @IBOutlet weak var mapOuterView: UIView!
+    @IBOutlet weak var switchBtn: UIButton!
+    @IBOutlet weak var trackSleepLabel: UILabel!
     
+    private var cameraInput: AVCaptureInput?
     private var eyesClosed = false
     private var timer: Timer = Timer()
     private var isUserMoving = true
@@ -35,13 +41,19 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.addCameraInput()
-        self.showCameraFeed()
-        self.getCameraFrames()
-        self.captureSession.startRunning()
+        self.switchBtn.layer.cornerRadius = 10
+        self.switchBtn.clipsToBounds = true
+        addressLbl.text = ""
+        self.view.bringSubviewToFront(self.trackSleepLabel)
+        self.trackSleepLabel.isHidden = true
+        self.view.bringSubviewToFront(addressLbl)
+        self.isFaceDetectionAllowed()
         UIApplication.shared.isIdleTimerDisabled = true
         NotificationCenter.default.addObserver(self, selector: #selector(batteryLevelDidChange), name: UIDevice.batteryLevelDidChangeNotification, object: nil)
         tickImgView.isHidden = true
+        let mapView = MapView.shared.getMapFor(view: self.view)
+        MapView.shared.delegate = self
+        self.mapOuterView.addSubview(mapView)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -60,17 +72,13 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
                 self.present(alertVC, animated: true, completion: nil)
             }
         }
+        self.view.bringSubviewToFront(customView)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
         self.localAudioPlayer?.stop()
         self.localAudioPlayer = nil
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        self.previewLayer.frame = self.view.frame
     }
     
     func captureOutput(
@@ -82,11 +90,15 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
                 return
             }
             let ciimg = CIImage(cvPixelBuffer: frame)
-            if self.isUserMoving {
-                self.detect(ciimage: ciimg)
-                self.detectFace(in: frame)
-            } else {
-                self.clearDrawings()
+            DispatchQueue.main.async { [weak self] in
+                if let weakSelf = self {
+                    if weakSelf.isUserMoving && weakSelf.switchBtn.title(for: .normal)?.lowercased() == "on" {
+                        weakSelf.detect(ciimage: ciimg)
+                        weakSelf.detectFace(in: frame)
+                    } else {
+                        weakSelf.clearDrawings()
+                    }
+                }
             }
         }
     
@@ -97,14 +109,16 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
             position: .front).devices.first else {
                 fatalError("No back camera device found, please make sure to run SimpleLaneDetection in an iOS device and not a simulator")
         }
-        let cameraInput = try! AVCaptureDeviceInput(device: device)
-        self.captureSession.addInput(cameraInput)
+        cameraInput = try! AVCaptureDeviceInput(device: device)
+        if let input = cameraInput {
+            self.captureSession.addInput(input)
+        }
     }
     
     private func showCameraFeed() {
         self.previewLayer.videoGravity = .resizeAspectFill
-        self.view.layer.addSublayer(self.previewLayer)
-        self.previewLayer.frame = self.view.frame
+        self.customView.layer.addSublayer(self.previewLayer)
+        self.previewLayer.frame = self.customView.bounds
     }
     
     private func getCameraFrames() {
@@ -122,6 +136,8 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
             DispatchQueue.main.async {
                 if let results = request.results as? [VNFaceObservation] {
                     if results.isEmpty && !(self.localAudioPlayer?.isPlaying ?? false) {
+                        self.trackSleepLabel.isHidden = true
+                        self.customView.isHidden = false
                         let path = Bundle.main.path(forResource: "faceAlign.m4a", ofType:nil)!
                         let url = URL(fileURLWithPath: path)
                         do {
@@ -129,6 +145,7 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
                             self.localAudioPlayer?.delegate = self
                             self.localAudioPlayer?.play()
                             self.eyesClosed = false
+                            self.navigationController?.navigationBar.bringSubviewToFront(self.switchBtn)
                         } catch {}
                     }
                     self.handleFaceDetectionResults(results)
@@ -137,6 +154,8 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
                     self.timer.invalidate()
                     self.eyesClosed = false
                     if !(self.localAudioPlayer?.isPlaying ?? false) {
+                        self.trackSleepLabel.isHidden = true
+                        self.customView.isHidden = false
                         let path = Bundle.main.path(forResource: "faceAlign.m4a", ofType:nil)!
                         let url = URL(fileURLWithPath: path)
                         do {
@@ -144,6 +163,7 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
                             self.localAudioPlayer?.delegate = self
                             self.localAudioPlayer?.play()
                             self.eyesClosed = false
+                            self.navigationController?.navigationBar.bringSubviewToFront(self.switchBtn)
                         } catch {}
                     }
                 }
@@ -162,7 +182,7 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
             let faceBoundingBoxShape = CAShapeLayer()
             faceBoundingBoxShape.path = faceBoundingBoxPath
             faceBoundingBoxShape.fillColor = UIColor.clear.cgColor
-            faceBoundingBoxShape.strokeColor = UIColor.green.cgColor
+            faceBoundingBoxShape.strokeColor = UIColor.clear.cgColor
             var newDrawings = [CAShapeLayer]()
             newDrawings.append(faceBoundingBoxShape)
             if let landmarks = observedFace.landmarks {
@@ -210,7 +230,7 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         let eyeDrawing = CAShapeLayer()
         eyeDrawing.path = eyePath
         eyeDrawing.fillColor = UIColor.clear.cgColor
-        eyeDrawing.strokeColor = UIColor.green.cgColor
+        eyeDrawing.strokeColor = UIColor.clear.cgColor
         
         return eyeDrawing
     }
@@ -247,8 +267,34 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         }
     }
     
+    func isFaceDetectionAllowed() {
+        if self.switchBtn.title(for: .normal)?.lowercased() == "on" {
+            self.addCameraInput()
+            self.showCameraFeed()
+            self.getCameraFrames()
+            self.captureSession.startRunning()
+            self.customView.isHidden = false
+            self.view.bringSubviewToFront(self.switchBtn)
+        } else {
+            if let input = cameraInput {
+                self.captureSession.removeInput(input)
+            }
+            self.captureSession.removeOutput(self.videoDataOutput)
+            self.previewLayer.removeFromSuperlayer()
+            self.captureSession.stopRunning()
+            self.customView.isHidden = true
+        }
+    }
+    
+    @IBAction func tapOnAllow(_ sender: Any) {
+        self.switchBtn.setTitle(self.switchBtn.titleLabel?.text?.lowercased() == "on" ? "OFF" : "ON", for: .normal)
+        self.isFaceDetectionAllowed()
+    }
+    
     @objc func checkEyesStateAndAlarm() {
         if self.eyesClosed && !(self.localAudioPlayer?.isPlaying ?? false) {
+            self.trackSleepLabel.isHidden = false
+            self.customView.isHidden = true
             let path = Bundle.main.path(forResource: "wakeUp.mp3", ofType:nil)!
             let url = URL(fileURLWithPath: path)
             do {
@@ -272,6 +318,8 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         
         //success
         if let face = faces?.first as? CIFaceFeature {
+            print(face.leftEyePosition)
+            print(face.rightEyePosition)
             if 81...99 ~= -face.faceAngle {
                 if !isFaceCorrectlyAligned {
                     if !(self.localAudioPlayer?.isPlaying ?? false) {
@@ -282,8 +330,12 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
                             localAudioPlayer?.delegate = self
                             self.localAudioPlayer?.play()
                             DispatchQueue.main.async {
+                                self.trackSleepLabel.isHidden = false
+                                self.customView.isHidden = true
                                 self.tickImgView.isHidden = false
                                 self.view.bringSubviewToFront(self.tickImgView)
+                                self.trackSleepLabel.isHidden = false
+                                self.customView.isHidden = true
                             }
                         } catch {}
                         self.isFaceCorrectlyAligned = true
@@ -294,6 +346,8 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
                 self.eyesClosed = false
                 self.timer.invalidate()
                 if !(self.localAudioPlayer?.isPlaying ?? false) {
+                    self.trackSleepLabel.isHidden = true
+                    self.customView.isHidden = false
                     let path = Bundle.main.path(forResource: "lineUp.m4a", ofType:nil)!
                     let url = URL(fileURLWithPath: path)
                     do {
@@ -326,16 +380,21 @@ extension ViewController: AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         if player.url?.absoluteString.contains("CorrectAngle.m4a") ?? false {
             self.tickImgView.isHidden = true
+            self.trackSleepLabel.isHidden = false
+            self.customView.isHidden = true
         }
     }
 }
 
 extension ViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if let speed = locations.first?.speed, speed > 0 {
-            self.isUserMoving = true
-            navigationTimer.invalidate()
-            navigationTimer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(userNavigationStop), userInfo: nil, repeats: false)
+//        if let speed = locations.first?.speed, speed > 0 {
+//            self.isUserMoving = true
+//            navigationTimer.invalidate()
+//            navigationTimer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(userNavigationStop), userInfo: nil, repeats: false)
+//        }
+        if let coordinate = locations.first?.coordinate {
+            MapView.shared.setCamera(coordinate: coordinate)
         }
     }
     
@@ -355,6 +414,16 @@ extension ViewController: CLLocationManagerDelegate {
            break
         default:
             break
+        }
+    }
+}
+
+extension ViewController: MapViewCallback {
+    func setAdderss(adr: String) {
+        self.addressLbl.text = adr
+        self.view.bringSubviewToFront(self.addressLbl)
+        UIView.animate(withDuration: 0.25) {
+            self.view.layoutIfNeeded()
         }
     }
 }

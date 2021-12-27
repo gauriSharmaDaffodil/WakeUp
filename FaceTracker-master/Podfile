@@ -1,0 +1,6 @@
+target 'FaceTracker' do
+  use_frameworks!
+
+  pod 'GoogleMaps'
+
+end

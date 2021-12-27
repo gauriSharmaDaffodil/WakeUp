@@ -3,10 +3,12 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		03994B192747B8A800B54A82 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03994B182747B8A800B54A82 /* Constant.swift */; };
+		03994B1B2747BE3E00B54A82 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03994B1A2747BE3E00B54A82 /* MapView.swift */; };
 		03AA96A827466F6B00BCF09E /* CorrectAngle.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 03AA96A727466F6B00BCF09E /* CorrectAngle.m4a */; };
 		03E94A6E274298AA00407A77 /* CGPointExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E94A6D274298AA00407A77 /* CGPointExtension.swift */; };
 		03E94A782744E87B00407A77 /* faceAlign.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 03E94A772744E87B00407A77 /* faceAlign.m4a */; };
@@ -17,14 +19,18 @@
 		1BB6F095228379870063EA5C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BB6F093228379870063EA5C /* Main.storyboard */; };
 		1BB6F097228379880063EA5C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1BB6F096228379880063EA5C /* Assets.xcassets */; };
 		1BB6F09A228379880063EA5C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BB6F098228379880063EA5C /* LaunchScreen.storyboard */; };
+		567BC75923403749689548CD /* Pods_FaceTracker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E229CE090C961D59AA39AAC4 /* Pods_FaceTracker.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		03994B182747B8A800B54A82 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
+		03994B1A2747BE3E00B54A82 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		03AA96A727466F6B00BCF09E /* CorrectAngle.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = CorrectAngle.m4a; sourceTree = "<group>"; };
 		03E94A6D274298AA00407A77 /* CGPointExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGPointExtension.swift; sourceTree = "<group>"; };
 		03E94A772744E87B00407A77 /* faceAlign.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = faceAlign.m4a; sourceTree = "<group>"; };
 		03E94A7B2745358600407A77 /* lineUp.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = lineUp.m4a; sourceTree = "<group>"; };
 		03E94A7F27463BE400407A77 /* wakeUp.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = wakeUp.mp3; sourceTree = "<group>"; };
+		0A320CD64907B49D3BB5BE95 /* Pods-FaceTracker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FaceTracker.release.xcconfig"; path = "Target Support Files/Pods-FaceTracker/Pods-FaceTracker.release.xcconfig"; sourceTree = "<group>"; };
 		1BB6F08C228379870063EA5C /* FaceTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FaceTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BB6F08F228379870063EA5C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1BB6F091228379870063EA5C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -32,6 +38,8 @@
 		1BB6F096228379880063EA5C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1BB6F099228379880063EA5C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1BB6F09B228379880063EA5C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BD6D0B15F441A4BA134D6A20 /* Pods-FaceTracker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FaceTracker.debug.xcconfig"; path = "Target Support Files/Pods-FaceTracker/Pods-FaceTracker.debug.xcconfig"; sourceTree = "<group>"; };
+		E229CE090C961D59AA39AAC4 /* Pods_FaceTracker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FaceTracker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,6 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				567BC75923403749689548CD /* Pods_FaceTracker.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -50,6 +59,8 @@
 			children = (
 				1BB6F08E228379870063EA5C /* FaceTracker */,
 				1BB6F08D228379870063EA5C /* Products */,
+				AAAE5CF71EDB198B217265E8 /* Pods */,
+				80061B060937D1D6978BE3D0 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -75,8 +86,27 @@
 				1BB6F098228379880063EA5C /* LaunchScreen.storyboard */,
 				1BB6F09B228379880063EA5C /* Info.plist */,
 				03E94A6D274298AA00407A77 /* CGPointExtension.swift */,
+				03994B182747B8A800B54A82 /* Constant.swift */,
+				03994B1A2747BE3E00B54A82 /* MapView.swift */,
 			);
 			path = FaceTracker;
+			sourceTree = "<group>";
+		};
+		80061B060937D1D6978BE3D0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E229CE090C961D59AA39AAC4 /* Pods_FaceTracker.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		AAAE5CF71EDB198B217265E8 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				BD6D0B15F441A4BA134D6A20 /* Pods-FaceTracker.debug.xcconfig */,
+				0A320CD64907B49D3BB5BE95 /* Pods-FaceTracker.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -86,9 +116,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1BB6F09E228379880063EA5C /* Build configuration list for PBXNativeTarget "FaceTracker" */;
 			buildPhases = (
+				C3F874C3942F95CF4AAE8ADC /* [CP] Check Pods Manifest.lock */,
 				1BB6F088228379870063EA5C /* Sources */,
 				1BB6F089228379870063EA5C /* Frameworks */,
 				1BB6F08A228379870063EA5C /* Resources */,
+				BBE567A003B56D4B212A1D16 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -149,6 +181,48 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		BBE567A003B56D4B212A1D16 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FaceTracker/Pods-FaceTracker-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FaceTracker/Pods-FaceTracker-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FaceTracker/Pods-FaceTracker-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C3F874C3942F95CF4AAE8ADC /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-FaceTracker-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		1BB6F088228379870063EA5C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -156,7 +230,9 @@
 			files = (
 				1BB6F092228379870063EA5C /* ViewController.swift in Sources */,
 				1BB6F090228379870063EA5C /* AppDelegate.swift in Sources */,
+				03994B1B2747BE3E00B54A82 /* MapView.swift in Sources */,
 				03E94A6E274298AA00407A77 /* CGPointExtension.swift in Sources */,
+				03994B192747B8A800B54A82 /* Constant.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -300,18 +376,20 @@
 		};
 		1BB6F09F228379880063EA5C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD6D0B15F441A4BA134D6A20 /* Pods-FaceTracker.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development: Joshua Yu (Q4468ZFH5H)";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = Q5SR9F73CS;
+				DEVELOPMENT_TEAM = GF8RV58343;
 				INFOPLIST_FILE = FaceTracker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.aistetic.tailoring;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wakeup.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = dev_aistetic;
+				PROVISIONING_PROFILE_SPECIFIER = wakeup_dev;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -319,18 +397,20 @@
 		};
 		1BB6F0A0228379880063EA5C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0A320CD64907B49D3BB5BE95 /* Pods-FaceTracker.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development: Joshua Yu (Q4468ZFH5H)";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = Q5SR9F73CS;
+				DEVELOPMENT_TEAM = GF8RV58343;
 				INFOPLIST_FILE = FaceTracker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.aistetic.tailoring;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wakeup.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = dev_aistetic;
+				PROVISIONING_PROFILE_SPECIFIER = wakeup_dev;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
