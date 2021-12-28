@@ -3,6 +3,7 @@ import AVFoundation
 import Vision
 import VideoToolbox
 import CoreLocation
+import MapKit
 
 enum Mode {
     case left, right
@@ -11,12 +12,13 @@ enum Mode {
 class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
     
     @IBOutlet weak var tickImgView: UIImageView!
-    @IBOutlet weak var addressLbl: UILabel!
     @IBOutlet weak var customView: UIView!
-    @IBOutlet weak var mapOuterView: UIView!
+    @IBOutlet weak var mapOuterView: MKMapView!
     @IBOutlet weak var switchBtn: UIButton!
     @IBOutlet weak var trackSleepLabel: UILabel!
+    @IBOutlet weak var searchbar: UISearchBar!
     
+    private var currentLocation: CLLocationCoordinate2D?
     private var cameraInput: AVCaptureInput?
     private var eyesClosed = false
     private var timer: Timer = Timer()
@@ -43,17 +45,13 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         super.viewDidLoad()
         self.switchBtn.layer.cornerRadius = 10
         self.switchBtn.clipsToBounds = true
-        addressLbl.text = ""
         self.view.bringSubviewToFront(self.trackSleepLabel)
         self.trackSleepLabel.isHidden = true
-        self.view.bringSubviewToFront(addressLbl)
         self.isFaceDetectionAllowed()
         UIApplication.shared.isIdleTimerDisabled = true
         NotificationCenter.default.addObserver(self, selector: #selector(batteryLevelDidChange), name: UIDevice.batteryLevelDidChangeNotification, object: nil)
         tickImgView.isHidden = true
-        let mapView = MapView.shared.getMapFor(view: self.view)
-        MapView.shared.delegate = self
-        self.mapOuterView.addSubview(mapView)
+        mapOuterView.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -386,7 +384,8 @@ extension ViewController: AVAudioPlayerDelegate {
     }
 }
 
-extension ViewController: CLLocationManagerDelegate {
+extension ViewController: CLLocationManagerDelegate, MKMapViewDelegate {
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
 //        if let speed = locations.first?.speed, speed > 0 {
 //            self.isUserMoving = true
@@ -394,8 +393,21 @@ extension ViewController: CLLocationManagerDelegate {
 //            navigationTimer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(userNavigationStop), userInfo: nil, repeats: false)
 //        }
         if let coordinate = locations.first?.coordinate {
-            MapView.shared.setCamera(coordinate: coordinate)
+            let center = CLLocationCoordinate2D(latitude: coordinate.latitude, longitude: coordinate.longitude)
+            self.currentLocation = center
+            let mRegion = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+            mapOuterView.setRegion(mRegion, animated: true)
+            
+            // Get user's Current Location and Drop a pin
+            let mkAnnotation: MKPointAnnotation = MKPointAnnotation()
+                mkAnnotation.coordinate = CLLocationCoordinate2DMake(coordinate.latitude, coordinate.longitude)
+                mkAnnotation.title = self.setUsersClosestLocation(mLattitude: coordinate.latitude, mLongitude: coordinate.longitude)
+                mapOuterView.addAnnotation(mkAnnotation)
         }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("Error - locationManager: \(error.localizedDescription)")
     }
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
@@ -416,14 +428,102 @@ extension ViewController: CLLocationManagerDelegate {
             break
         }
     }
+    
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+         let renderer = MKPolylineRenderer(overlay: overlay)
+         renderer.strokeColor = UIColor.red
+         renderer.lineWidth = 5.0
+         return renderer
+    }
+    
+    func setUsersClosestLocation(mLattitude: CLLocationDegrees, mLongitude: CLLocationDegrees) -> String {
+        let geoCoder = CLGeocoder()
+        var currentLocationStr = ""
+        let location = CLLocation(latitude: mLattitude, longitude: mLongitude)
+
+        geoCoder.reverseGeocodeLocation(location) {
+            (placemarks, error) -> Void in
+
+            if let mPlacemark = placemarks{
+                if let dict = mPlacemark[0].addressDictionary as? [String: Any]{
+                    if let Name = dict["Name"] as? String{
+                        if let City = dict["City"] as? String{
+                            currentLocationStr = Name + ", " + City
+                        }
+                    }
+                }
+            }
+        }
+        return currentLocationStr
+    }
+    
+    func showRouteOnMap(pickupCoordinate: CLLocationCoordinate2D, destinationCoordinate: CLLocationCoordinate2D) {
+
+            let request = MKDirections.Request()
+            request.source = MKMapItem(placemark: MKPlacemark(coordinate: pickupCoordinate, addressDictionary: nil))
+            request.destination = MKMapItem(placemark: MKPlacemark(coordinate: destinationCoordinate, addressDictionary: nil))
+            request.requestsAlternateRoutes = true
+            request.transportType = .automobile
+
+            let directions = MKDirections(request: request)
+
+            directions.calculate { [unowned self] response, error in
+                guard let unwrappedResponse = response else { return }
+                
+                //for getting just one route
+                if let route = unwrappedResponse.routes.first {
+                    //show on map
+                    for eachoverlay in self.mapOuterView.overlays {
+                        self.mapOuterView.removeOverlay(eachoverlay)
+                    }
+                    self.mapOuterView.addOverlay(route.polyline)
+                    //set the map area to show the route
+                    self.mapOuterView.setVisibleMapRect(route.polyline.boundingMapRect, edgePadding: UIEdgeInsets.init(top: 80.0, left: 20.0, bottom: 100.0, right: 20.0), animated: true)
+                }
+
+                //if you want to show multiple routes then you can get all routes in a loop in the following statement
+                //for route in unwrappedResponse.routes {}
+            }
+        }
 }
 
-extension ViewController: MapViewCallback {
-    func setAdderss(adr: String) {
-        self.addressLbl.text = adr
-        self.view.bringSubviewToFront(self.addressLbl)
-        UIView.animate(withDuration: 0.25) {
-            self.view.layoutIfNeeded()
+extension ViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        self.view.endEditing(true)
+        if let str = searchbar.text, !str.isEmpty {
+            if let currentLoc = self.currentLocation {
+                CustomMapView().getLocationFromAddress(address: str, completion: { location in
+                    if let destinationLocation = location {
+                        self.showRouteOnMap(pickupCoordinate: currentLoc, destinationCoordinate: destinationLocation)
+                    } else {
+                        self.showAlert(msg: "Destination location not found.")
+                    }
+                })
+            } else {
+                self.showAlert(msg: "Current location not found.")
+            }
+        } else {
+            self.showAlert(msg: "Destination location not found.")
         }
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        self.searchbar.endEditing(true)
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText == "" {
+            for eachoverlay in self.mapOuterView.overlays {
+                self.mapOuterView.removeOverlay(eachoverlay)
+            }
+        }
+    }
+    
+    func showAlert(msg: String) {
+        let alertvc = UIAlertController(title: "", message: msg, preferredStyle: .alert)
+        alertvc.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+            self.view.endEditing(true)
+        }))
+        self.present(alertvc, animated: true, completion: nil)
     }
 }

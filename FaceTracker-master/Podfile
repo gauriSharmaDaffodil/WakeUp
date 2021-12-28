@@ -1,6 +1,5 @@
 target 'FaceTracker' do
   use_frameworks!
-
   pod 'GoogleMaps'
-
+  pod 'SwiftyJSON', '~> 4.0'
 end

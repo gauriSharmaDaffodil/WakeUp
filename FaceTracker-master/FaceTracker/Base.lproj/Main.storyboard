@@ -17,21 +17,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pif-hA-XKX">
-                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pif-hA-XKX" customClass="MKMapView">
+                                <rect key="frame" x="0.0" y="208" width="414" height="688"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tracking Sleepiness..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sos-sY-DmG">
-                                <rect key="frame" x="214" y="88" width="200" height="50"/>
-                                <color key="backgroundColor" red="0.14117647059999999" green="0.3294117647" blue="0.0078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="SQ3-bh-PQ9"/>
-                                    <constraint firstAttribute="width" constant="200" id="iDR-c2-W8a"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lup-JA-MCa">
                                 <rect key="frame" x="20" y="238" width="374" height="346"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -45,33 +34,52 @@
                                     <constraint firstAttribute="height" constant="150" id="hNG-0K-X5S"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bee-g1-0VI">
-                                <rect key="frame" x="0.0" y="842.5" width="414" height="19.5"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                <color key="textColor" red="0.14117647059999999" green="0.3294117647" blue="0.0078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="EaW-SG-gJe">
+                                <rect key="frame" x="0.0" y="88" width="414" height="120"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tracking Sleepiness..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sos-sY-DmG">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
+                                        <color key="backgroundColor" red="0.14117647059999999" green="0.3294117647" blue="0.0078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="SQ3-bh-PQ9"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <searchBar contentMode="redraw" placeholder="Search Address" showsCancelButton="YES" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hE3-nf-yeh">
+                                        <rect key="frame" x="0.0" y="60" width="414" height="60"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="60" id="XdD-70-Uau"/>
+                                        </constraints>
+                                        <textInputTraits key="textInputTraits"/>
+                                        <scopeButtonTitles>
+                                            <string>Title</string>
+                                            <string>Title</string>
+                                        </scopeButtonTitles>
+                                        <connections>
+                                            <outlet property="delegate" destination="BYZ-38-t0r" id="Zpu-3j-CEc"/>
+                                        </connections>
+                                    </searchBar>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="pif-hA-XKX" secondAttribute="bottom" id="CjL-ax-etq"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="sos-sY-DmG" secondAttribute="trailing" id="KVL-No-Xeh"/>
+                            <constraint firstItem="pif-hA-XKX" firstAttribute="top" secondItem="EaW-SG-gJe" secondAttribute="bottom" id="743-7M-WXl"/>
+                            <constraint firstItem="EaW-SG-gJe" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="EpQ-b9-Wjf"/>
                             <constraint firstItem="6Bl-YW-kUF" firstAttribute="top" secondItem="lup-JA-MCa" secondAttribute="bottom" constant="108.5" id="LbO-u1-gNE"/>
-                            <constraint firstItem="pif-hA-XKX" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="Ma3-I2-kTP"/>
-                            <constraint firstItem="bee-g1-0VI" firstAttribute="top" secondItem="6Bl-YW-kUF" secondAttribute="bottom" id="V2s-vJ-vhB"/>
+                            <constraint firstAttribute="bottom" secondItem="pif-hA-XKX" secondAttribute="bottom" id="PjW-yK-LqE"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="6Bl-YW-kUF" secondAttribute="trailing" id="Vff-pE-6gQ"/>
+                            <constraint firstItem="EaW-SG-gJe" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="Zdu-jU-iUZ"/>
                             <constraint firstItem="6Bl-YW-kUF" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="ZeT-dC-AtB"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="bee-g1-0VI" secondAttribute="trailing" id="dlt-qy-lNj"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="bee-g1-0VI" secondAttribute="bottom" id="eGg-st-jNk"/>
                             <constraint firstItem="pif-hA-XKX" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="gVb-BF-keI"/>
                             <constraint firstItem="lup-JA-MCa" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="150" id="gzf-kj-0qg"/>
-                            <constraint firstItem="bee-g1-0VI" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="j8t-3J-XJC"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="pif-hA-XKX" secondAttribute="trailing" id="oX3-DL-j5L"/>
                             <constraint firstItem="lup-JA-MCa" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="pvn-v8-zXv"/>
-                            <constraint firstItem="sos-sY-DmG" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="q0E-w3-LXC"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="lup-JA-MCa" secondAttribute="trailing" constant="20" id="ufw-50-8vJ"/>
+                            <constraint firstAttribute="trailing" secondItem="EaW-SG-gJe" secondAttribute="trailing" id="zXK-U4-iHU"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="xn6-HG-tI3">
@@ -96,9 +104,9 @@
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
-                        <outlet property="addressLbl" destination="bee-g1-0VI" id="6je-TX-E0V"/>
                         <outlet property="customView" destination="lup-JA-MCa" id="bpC-nx-sqc"/>
                         <outlet property="mapOuterView" destination="pif-hA-XKX" id="7EM-dY-6Uf"/>
+                        <outlet property="searchbar" destination="hE3-nf-yeh" id="lJB-cF-qry"/>
                         <outlet property="switchBtn" destination="cgF-YW-sh1" id="7xx-z3-h4y"/>
                         <outlet property="tickImgView" destination="6Bl-YW-kUF" id="31T-0w-Hkv"/>
                         <outlet property="trackSleepLabel" destination="sos-sY-DmG" id="Kcy-lP-L98"/>

@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		03937D9D277AF559000C5CAA /* CustomMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03937D9C277AF559000C5CAA /* CustomMapView.swift */; };
 		03994B192747B8A800B54A82 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03994B182747B8A800B54A82 /* Constant.swift */; };
-		03994B1B2747BE3E00B54A82 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03994B1A2747BE3E00B54A82 /* MapView.swift */; };
 		03AA96A827466F6B00BCF09E /* CorrectAngle.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 03AA96A727466F6B00BCF09E /* CorrectAngle.m4a */; };
 		03E94A6E274298AA00407A77 /* CGPointExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E94A6D274298AA00407A77 /* CGPointExtension.swift */; };
 		03E94A782744E87B00407A77 /* faceAlign.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 03E94A772744E87B00407A77 /* faceAlign.m4a */; };
@@ -23,8 +23,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		03937D9C277AF559000C5CAA /* CustomMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMapView.swift; sourceTree = "<group>"; };
 		03994B182747B8A800B54A82 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
-		03994B1A2747BE3E00B54A82 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		03AA96A727466F6B00BCF09E /* CorrectAngle.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = CorrectAngle.m4a; sourceTree = "<group>"; };
 		03E94A6D274298AA00407A77 /* CGPointExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGPointExtension.swift; sourceTree = "<group>"; };
 		03E94A772744E87B00407A77 /* faceAlign.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = faceAlign.m4a; sourceTree = "<group>"; };
@@ -87,7 +87,7 @@
 				1BB6F09B228379880063EA5C /* Info.plist */,
 				03E94A6D274298AA00407A77 /* CGPointExtension.swift */,
 				03994B182747B8A800B54A82 /* Constant.swift */,
-				03994B1A2747BE3E00B54A82 /* MapView.swift */,
+				03937D9C277AF559000C5CAA /* CustomMapView.swift */,
 			);
 			path = FaceTracker;
 			sourceTree = "<group>";
@@ -120,7 +120,8 @@
 				1BB6F088228379870063EA5C /* Sources */,
 				1BB6F089228379870063EA5C /* Frameworks */,
 				1BB6F08A228379870063EA5C /* Resources */,
-				BBE567A003B56D4B212A1D16 /* [CP] Copy Pods Resources */,
+				4BC3140302474878F903E164 /* [CP] Copy Pods Resources */,
+				560A44C792CF467C59FC6C29 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -182,7 +183,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		BBE567A003B56D4B212A1D16 /* [CP] Copy Pods Resources */ = {
+		4BC3140302474878F903E164 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -197,6 +198,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FaceTracker/Pods-FaceTracker-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		560A44C792CF467C59FC6C29 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FaceTracker/Pods-FaceTracker-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FaceTracker/Pods-FaceTracker-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FaceTracker/Pods-FaceTracker-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C3F874C3942F95CF4AAE8ADC /* [CP] Check Pods Manifest.lock */ = {
@@ -228,9 +246,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03937D9D277AF559000C5CAA /* CustomMapView.swift in Sources */,
 				1BB6F092228379870063EA5C /* ViewController.swift in Sources */,
 				1BB6F090228379870063EA5C /* AppDelegate.swift in Sources */,
-				03994B1B2747BE3E00B54A82 /* MapView.swift in Sources */,
 				03E94A6E274298AA00407A77 /* CGPointExtension.swift in Sources */,
 				03994B192747B8A800B54A82 /* Constant.swift in Sources */,
 			);
